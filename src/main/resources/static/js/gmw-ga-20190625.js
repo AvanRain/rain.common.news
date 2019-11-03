@@ -1,0 +1,1 @@
+$(window).bind("load",function(){var as=document.createElement("script");as.type="text/javascript";as.async=true;as.src="https://www.googletagmanager.com/gtag/js?id=UA-20947729-1";var s=document.getElementsByTagName("script")[0];var ns=document.createElement("noscript");s.parentNode.insertBefore(as,s);s.parentNode.insertBefore(ns,s)});
