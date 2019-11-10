@@ -22,6 +22,9 @@ public class CommonPropsUtils {
     @Value("${general.html.download.path}")
     private String htmlDownloadPath;
 
+    @Value("${general.html.image.path}")
+    private String htmlImagePath;
+
     public String getHtmlUploadPath() {
         return htmlUploadPath;
     }
@@ -44,5 +47,13 @@ public class CommonPropsUtils {
 
     public void setHtmlDownloadPath(String htmlDownloadPath) {
         this.htmlDownloadPath = htmlDownloadPath;
+    }
+
+    public String getHtmlImagePath() {
+        return htmlImagePath;
+    }
+
+    public void setHtmlImagePath(String htmlImagePath) {
+        this.htmlImagePath = htmlImagePath;
     }
 }
