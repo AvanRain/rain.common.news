@@ -54,6 +54,16 @@ public class GeneralContentController {
      */
     private static final String SPLIT_SPOT=".";
 
+    /**
+     * WIN_FILE_SEP
+     */
+    private static final String WIN_FILE_SEP="\\";
+
+    /**
+     * WIN_FILE_SEP
+     */
+    private static final String LINUX_FILE_SEP="/";
+
     @RequestMapping(value = "general" , method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String general(HttpServletRequest request, HttpServletResponse response, Model model){
@@ -98,10 +108,19 @@ public class GeneralContentController {
     public String upload(MultipartFile file, HttpServletRequest request, HttpServletResponse response, Model model){
         Map<String,Object> result = new HashMap<>(2);
         try {
-            String fileName = file.getOriginalFilename();
+            String fileFullName = file.getOriginalFilename();
+            String fileName = fileFullName;
+            if (fileFullName.indexOf(WIN_FILE_SEP) > 0){
+                fileName = fileFullName.substring(fileFullName.lastIndexOf(WIN_FILE_SEP)+1);
+            }
+
+            if (fileFullName.indexOf(LINUX_FILE_SEP) > 0){
+                fileName = fileFullName.substring(fileFullName.lastIndexOf(LINUX_FILE_SEP)+1);
+            }
             //获取文件后缀名
             String suffixName = fileName.substring(fileName.lastIndexOf("."));
-            String filePath = commonPropsUtils.getHtmlUploadPath()+"/"+fileName;
+            String filePath = commonPropsUtils.getHtmlUploadPath()+File.separator+fileName;
+            System.out.println(filePath);
             file.transferTo(new File(filePath));
             result.put("code",0);
         } catch (Exception e) {
@@ -230,13 +249,15 @@ public class GeneralContentController {
         return null;
     }
 
-    @RequestMapping(value = "convertDocx2Html" , method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "convertDocx2Html" , method = {RequestMethod.GET, RequestMethod.POST}, produces = {"application/json;charset=UTF-8"})
     public String convertDocx2Html(HttpServletRequest request, HttpServletResponse response, Model model) {
         try {
             String filepath = commonPropsUtils.getHtmlUploadPath();
-            String fileName = "abc.docx";
-            String htmlName = "abc.html";
-            final String file = filepath +"/" + fileName;
+//            String fileName = "abc.docx";
+//            String htmlName = "abc.html";
+            String fileName = request.getParameter("srcName");
+            String htmlName = request.getParameter("destName");
+            final String file = filepath + File.separator + fileName + ".docx";
             File f = new File(file);
             if (!f.exists()) {
                 System.out.println("Sorry File does not Exists!");
@@ -257,7 +278,7 @@ public class GeneralContentController {
                     options.setFragment(true);
 
                     // 3) 将 XWPFDocument转换成XHTML
-                    OutputStream out = new FileOutputStream(new File(filepath+ "/" + htmlName));
+                    OutputStream out = new FileOutputStream(new File(filepath+ File.separator + htmlName + ".html"));
                     XHTMLConverter.getInstance().convert(document, out, options);
 
                     //也可以使用字符数组流获取解析的内容

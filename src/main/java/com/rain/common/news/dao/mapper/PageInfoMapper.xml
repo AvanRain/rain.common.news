@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rain.common.news.dao.PageInfoMapper">
+
+
+    <insert id="insertPageInfo">
+        INSERT INTO page_info (code, name,page_type,page_url,video_url,excel_url,update_time,create_time,create_user,isuse,remark)
+        VALUES (#{code},#{name},#{pageType},#{pageUrl},#{videoUrl},#{excelUrl},NOW(),NOW(),#{createUser},#{issue},#{remark})
+    </insert>
+
+    <insert id="insertBatchPageInfo">
+        INSERT INTO page_info (code, name,page_type,page_url,video_url,excel_url,update_time,create_time,create_user,isuse,remark)
+        VALUES
+        <foreach collection="po" open="(" close=")" separator="),(" item="item">
+            #{item.code},#{item.name},#{item.pageType},#{item.pageUrl},#{item.videoUrl},#{item.excelUrl},NOW(),NOW(),#{item.createUser},#{item.issue},#{item.remark}
+        </foreach>
+    </insert>
+
+</mapper>
