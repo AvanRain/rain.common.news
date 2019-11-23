@@ -25,6 +25,15 @@ public class CommonPropsUtils {
     @Value("${general.html.image.path}")
     private String htmlImagePath;
 
+    @Value("${general.login.username}")
+    private String loginUserName;
+
+    @Value("${general.login.password}")
+    private String loginPassWord;
+
+    @Value("{general.login.domain}")
+    private String LoginDomain;
+
     public String getHtmlUploadPath() {
         return htmlUploadPath;
     }
@@ -55,5 +64,29 @@ public class CommonPropsUtils {
 
     public void setHtmlImagePath(String htmlImagePath) {
         this.htmlImagePath = htmlImagePath;
+    }
+
+    public String getLoginUserName() {
+        return loginUserName;
+    }
+
+    public void setLoginUserName(String loginUserName) {
+        this.loginUserName = loginUserName;
+    }
+
+    public String getLoginPassWord() {
+        return loginPassWord;
+    }
+
+    public void setLoginPassWord(String loginPassWord) {
+        this.loginPassWord = loginPassWord;
+    }
+
+    public String getLoginDomain() {
+        return LoginDomain;
+    }
+
+    public void setLoginDomain(String loginDomain) {
+        LoginDomain = loginDomain;
     }
 }

@@ -24,6 +24,9 @@ public class StaticConfig implements WebMvcConfigurer {
     @Autowired
     private CommonPropsUtils commonPropsUtils;
 
+    @Autowired
+    private LoginInterceptor loginInterceptor;
+
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
 
@@ -51,7 +54,7 @@ public class StaticConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/auth/**");
     }
 
     @Override

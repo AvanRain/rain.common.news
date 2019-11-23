@@ -68,41 +68,70 @@ class ApplicationTests {
 				System.out.println(2);
 				return;
 			}
-			for (int i = 0; i < sheetNum; i++){
+			for (int i = 1; i < sheetNum; i++){
 				Sheet sheet = wb.getSheetAt(i);
 				//第一行为标题
-				for (Row row : sheet) {
+				for (int r=1 ; r <= sheet.getLastRowNum() ; r++){
+					Row row = sheet.getRow(r);
 					PageInfoPo po = new PageInfoPo();
-					for(int j = 0; j < row.getLastCellNum(); j++){
-						Cell cell = row.getCell(j);
-						cell.setCellType(CellType.STRING);
-						String value = cell.getStringCellValue();
-						switch (j){
-							case 0:
-								po.setCode(value);
-								break;
-							case 1:
-								po.setName(value);
-								break;
-							case 2:
-								if (value.equalsIgnoreCase("T1")){
-									po.setPageType(1);
-								} else if (value.equalsIgnoreCase("T2")){
-									po.setPageType(2);
-								}
-								break;
-							case 3:
-								po.setPageUrl(value);
-								break;
-							case 4:
-								po.setVideoUrl(value);
-								break;
-							default:break;
-						}
+//					for(int j = 0; j < row.getLastCellNum(); j++){
+//						Cell cell = row.getCell(j);
+//						cell.setCellType(CellType.STRING);
+//						String value = cell.getStringCellValue();
+//						switch (j){
+//							case 0:
+//								po.setCode(value);
+//								break;
+//							case 1:
+//								po.setName(value);
+//								break;
+//							case 2:
+//								if (value.equalsIgnoreCase("T1")){
+//									po.setVideoUrl("www.financial-education-hub/accrual-introduction/"+po.getCode());
+//									po.setPageType(1);
+//								} else if (value.equalsIgnoreCase("T2")){
+//									po.setPageType(2);
+//									po.setVideoUrl("www.financial-education-hub/accrual-introduction/"+po.getCode());
+//									po.setPageUrl("www.financial-education-hub/accrual-method/"+po.getCode());
+//								}
+//								break;
+//							case 3:
+////								po.setPageUrl(value);
+//								break;
+//							case 4:
+////								po.setVideoUrl(value);
+//								break;
+//							default:break;
+//						}
+//					}
+
+					Cell cell_code = row.getCell(0);
+					cell_code.setCellType(CellType.STRING);
+					po.setCode(cell_code.getStringCellValue());
+
+					Cell cell_name = row.getCell(1);
+					cell_name.setCellType(CellType.STRING);
+					po.setName(cell_name.getStringCellValue());
+
+					Cell cell_type = row.getCell(2);
+					cell_type.setCellType(CellType.STRING);
+
+					if (cell_type.getStringCellValue().equalsIgnoreCase("T1")){
+						po.setPageType(1);
+						po.setPageUrl("www.financial-education-hub/accrual-introduction/"+po.getCode());
+						System.out.println("iiii="+pageService.addPageInfo(po));
+					} else if (cell_type.getStringCellValue().equalsIgnoreCase("T2")){
+						po.setPageType(2);
+						po.setPageUrl("www.financial-education-hub/accrual-introduction/"+po.getCode());
+						System.out.println("iiii="+pageService.addPageInfo(po));
+						po.setPageUrl("www.financial-education-hub/accrual-method/"+po.getCode());
+						System.out.println("iiii="+pageService.addPageInfo(po));
 					}
+
 					poList.add(po);
 				}
 			}
+
 			System.out.println(JSON.toJSONString(poList));
 
 		} catch (Exception e) {
