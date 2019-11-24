@@ -31,8 +31,11 @@ public class CommonPropsUtils {
     @Value("${general.login.password}")
     private String loginPassWord;
 
-    @Value("{general.login.domain}")
+    @Value("${general.login.domain}")
     private String LoginDomain;
+
+    @Value("${general.login.url}")
+    private String LoginUrl;
 
     public String getHtmlUploadPath() {
         return htmlUploadPath;
@@ -88,5 +91,13 @@ public class CommonPropsUtils {
 
     public void setLoginDomain(String loginDomain) {
         LoginDomain = loginDomain;
+    }
+
+    public String getLoginUrl() {
+        return LoginUrl;
+    }
+
+    public void setLoginUrl(String loginUrl) {
+        LoginUrl = loginUrl;
     }
 }

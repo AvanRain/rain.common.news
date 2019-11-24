@@ -136,34 +136,6 @@
             border: 0px solid #ef4300;
         }
 
-        .error {
-            display: none;
-            position: absolute;
-            top: 27px;
-            right: -55px;
-            width: 40px;
-            height: 40px;
-            background: #2d2d2d; /* browsers that don't support rgba */
-            background: rgba(45,45,45,.25);
-            -moz-border-radius: 8px;
-            -webkit-border-radius: 8px;
-            border-radius: 8px;
-        }
-
-        .error span {
-            display: inline-block;
-            margin-left: 2px;
-            font-size: 40px;
-            font-weight: 700;
-            line-height: 40px;
-            text-shadow: 0 1px 2px rgba(0,0,0,.1);
-            -o-transform: rotate(45deg);
-            -moz-transform: rotate(45deg);
-            -webkit-transform: rotate(45deg);
-            -ms-transform: rotate(45deg);
-
-        }
-
     </style>
 
 </head>
@@ -172,13 +144,57 @@
 
 <div class="page-container">
     <h1>账户登录</h1>
-    <form action="" method="post">
-        <input type="text" name="username" class="username" placeholder="Username">
-        <input type="password" name="password" class="password" placeholder="Password">
-        <button type="submit">登  录</button>
-        <div class="error"><span>+</span></div>
+    <form action="/user/login" method="post" id="loginId">
+        <input type="text" name="username" id="username" class="username" placeholder="Username">
+        <input type="password" name="password" id="password" class="password" placeholder="Password">
+        <button type="button" onclick="doLogin()">登  录</button>
     </form>
 </div>
+<script src="./js/jquery-3.4.1.min.js"></script>
+<script>
 
+    function doLogin() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        if (username == null || username == "" || username == undefined || username.trim() == ""
+        || password == null || password == "" || password == undefined || password.trim() == "") {
+            alert("用户名或密码为空");
+            return;
+        }
+
+        $.ajax({
+            url:"/user/login",
+            dataType:"json",
+            type:"post",
+            data:$("#loginId").serialize(),
+            error:function (re) {
+                alert("用户名或密码为空");
+            },
+            success:function (re) {
+                console.log(re)
+                if(re.code == 0){
+                    alert("登录成功");
+                    window.location.href=GetQueryString("returnUrl");
+                } else {
+                    alert("登录失败");
+                }
+            }
+        })
+    }
+
+    function GetQueryString(name) {
+
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+
+        if(r!=null){
+            return  unescape(r[2]);
+        }
+
+        return null;
+
+    }
+
+</script>
 </body>
 </html>
